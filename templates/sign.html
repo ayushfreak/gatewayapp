@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<title>SIGN IN</title>
+</head>
+   <body background="{{ url_for('static', filename='ayush3.jpg') }}">
+   
+       
+      
+      <form   method = post>
+         <fieldset>
+            <legend style = "font-size:30px;font-weight:bold;" >SIGN IN PAGE</legend>
+            {{ form.hidden_tag() }}
+            {% with messages = get_flashed_messages() %}
+ 	  {% if messages %}
+     	 {% for message in messages %}
+         <div style="color:red;font-size:30px;">{{ message }}</div>
+            {% endfor %}
+    	 
+ 	  {% endif %}
+	{% endwith %}
+            <div style = "font-size:30px;color:black; font-weight:bold; margin-left:50px;">
+               <div >{{ form.username.label }}</div>
+               
+               {{ form.username }}
+		 {% for message in form.username.errors %}
+             <div style="color:red;font-size:20px;">{{ message }}</div>
+            {% endfor %}
+      
+               <br>
+               
+               {{ form.password.label }}<br> {{ form.password }}
+               <br>
+               {{ form.confirm.label }} <br>{{ form.confirm }}
+		 {% for message in form.password.errors %}
+		     <div style="color:red;font-size:20px;">{{ message }}</div>
+		    {% endfor %}
+      
+                <br>
+               {{ form.age.label }}<br>
+               {{ form.age }}
+		 {% for message in form.age.errors %}
+             <div style="color:red;font-size:20px;">{{ message }}</div>
+            {% endfor %}
+      
+               <br>
+               {{ form.submit }}
+            </div>
+            
+         </fieldset>
+      </form>
+      
+   </body>
+</html>

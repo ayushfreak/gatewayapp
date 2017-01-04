@@ -35,16 +35,16 @@ def signin():
 			flash ("please enter all the fields")
 			return render_template('sign.html', form = form)
 		else:
-			Username=form.username.data
-			Password = str(form.password.data)
-			Age=form.age.data	
-			"""x=c.execute("SELECT COUNT(*)  FROM INFORMATION WHERE USERNAME IN (Username)")
-			if(x > 0):
+			Username=request.form['username']
+			Password =request.form['password']
+			Age=request.form['age']	
+			x=c.execute("SELECT * FROM INFORMATION WHERE USERNAME = (%s);",(Username,))
+			if int(x) > 0:
 				return render_template('login.html', form = form)
-			else:"""
-			c.execute("INSERT INTO INFORMATION (USERNAME,PASSWORD,AGE)VALUES (Username,Password,Age)")
-			#conn.commit()				
-			return render_template('sucess.html')
+			else:
+				c.execute("INSERT INTO INFORMATION (USERNAME,PASSWORD,AGE)VALUES (%s,%s,%s);",(Username,Password,Age))
+				conn.commit()				
+				return render_template('sucess.html',name=Username)
 	else:
 		return render_template('sign.html', form = form)
 	
@@ -57,13 +57,12 @@ def login():
 			return render_template('login.html', form = form)
 		else:
 			Username=form.username.data
-			Password = str(form.password.data)
-			x=c.execute("SELECT COUNT(*)  FROM INFORMATION WHERE USERNAME IN (Username)")
-			if(int(x)==1): 
-				if(c.fetchone()[2]==Password):
-                        		return render_template('sucess.html')
-				else:
-					return render_template('login.html', form = form)
+			Password = form.password.data
+			x=c.execute("SELECT COUNT(*)  FROM INFORMATION WHERE USERNAME IN (%s) AND PASSWORD IN (%s)",(Username,Password))
+			if(int(x)==1 ): 
+                        	return render_template('sucesslogin.html',name=Username)
+			else:
+				return render_template('login.html', form = form)
 	else:		
 		return render_template('login.html', form = form)
 
